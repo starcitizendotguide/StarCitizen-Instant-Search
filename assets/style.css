@@ -1,0 +1,10 @@
+body {
+  background-color: #fc797f;
+}
+
+.x {
+  position: absolute;
+  top: 0;
+  right: 0.5em;
+  cursor: pointer;
+}

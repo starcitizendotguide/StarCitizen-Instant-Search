@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>StarCitizen - Instant Search</title>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/materialize/0.97.0/css/materialize.min.css" charset="utf-8">
+    <link rel="stylesheet" href="./assets/style.css" charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.css" />
+
+</head>
+<body>
+    <div class="navbar-fixed">
+      <nav>
+        <div class="nav-wrapper">
+            <div class="input-field">
+              <input id="search" type="search" placeholder="Search..."/>
+              <label for="search"><i class="material-icons left"></i></label>
+            </div>
+        </div>
+      </nav>
+    </div>
+    <div class="container">
+        <div class="col s12">
+            <div class="card hoverable">
+                <div class="card-content" id="stats">
+                    You have 0 results, fetched in 0ms. <span class="ais-search-box--powered-by right">Search by <a class="ais-search-box--powered-by-link" href="https://www.algolia.com/" target="_blank">Algolia</a></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="results" class="container"></div>
+</body>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js" charset="utf-8"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/materialize/0.97.0/js/materialize.min.js" charset="utf-8"></script>
+
+<script src="//cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.js"></script>
+<script src="./assets/app.js" charset="utf-8"></script>
+</html>

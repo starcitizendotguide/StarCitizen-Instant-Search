@@ -39,6 +39,17 @@ search.addWidget(
 				</div>
 			</div>
 			`;
+		},
+		empty: function() {
+			return `
+			<div class="col s12">
+				<div class="card hoverable">
+					<div class="card-content">
+						<p class="grey-text text-darken-1">No Results.</p>
+					</div>
+				</div>
+			</div>
+			`;
 		}
 	}
   })

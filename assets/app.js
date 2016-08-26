@@ -4,7 +4,7 @@ let search = instantsearch({
   indexName: 'question_',
   searchFunction(helper) {
 
-	if(helper.state.query.length < 6) {
+	if(helper.state.query.length < 4) {
 		return;
 	}
 

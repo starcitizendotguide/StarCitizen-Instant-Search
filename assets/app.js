@@ -4,7 +4,7 @@ let search = instantsearch({
   indexName: 'question_',
   searchFunction(helper) {
 
-	if(helper.state.query.length < 6) {
+	if(helper.state.query.length < 4) {
 		return;
 	}
 
@@ -35,6 +35,17 @@ search.addWidget(
 						<h5 class="title red-text text-lighten-2">` + data.question + `</h5>
 						<blockquote>` + data.answer + `</blockquote>
 						<p class="grey-text text-darken-1">- asked by ` + data.user + `</p>
+					</div>
+				</div>
+			</div>
+			`;
+		},
+		empty: function() {
+			return `
+			<div class="col s12">
+				<div class="card hoverable">
+					<div class="card-content">
+						<p class="grey-text text-darken-1">No Results.</p>
 					</div>
 				</div>
 			</div>

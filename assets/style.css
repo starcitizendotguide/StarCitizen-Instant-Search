@@ -1,5 +1,7 @@
 body {
-  background-color: #fc797f;
+  background-image: url('header.jpg');
+  background-attachment: fixed;
+  background-size: cover;
 }
 
 .x {

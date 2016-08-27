@@ -1,3 +1,38 @@
+// Charts
+/*$.getJSON("https://spreadsheets.google.com/feeds/list/1obytG213tRUzNIepdSjDysaBlgJDjeOiekskYVvtRvE/od6/public/values?alt=json", function(data) {
+
+    var entries = data.feed.entry;
+    var labels = [];
+    var serie = [];
+
+    entries.forEach(function(entry) {
+
+        var content = entry.content.$t.split(', ');
+        var stack = [];
+        content.forEach(function(raw) {
+            stack.push(raw.split(': ')[1]);
+        });
+
+        labels.push(stack[0]);
+        serie.push(parseFloat(stack[1].replace('$', '').replace(/\./g, '')));
+
+    });
+
+    console.log(labels);
+    console.log(serie);
+    new Chartist.Line('.ct-chart', {
+      labels: labels,
+      series: [
+        serie
+      ]
+    }, {
+      fullWidth: true,
+      chartPadding: {
+        right: 40
+      }
+    });
+
+});*/
 // instant search <3
 let search = instantsearch({
   appId: 'JXS80KHU8P',

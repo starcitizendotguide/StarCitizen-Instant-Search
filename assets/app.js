@@ -1,3 +1,4 @@
+// instant search <3
 let search = instantsearch({
   appId: 'JXS80KHU8P',
   apiKey: 'ce0e3984181fb0fc71f26a20c56d9725',
@@ -25,7 +26,7 @@ search.addWidget(
 search.addWidget(
   instantsearch.widgets.hits({
 	container: '#results',
-	hitsPerPage: 500,
+	hitsPerPage: 10,
 	templates: {
 		item: function(data) {
 			return `

@@ -3,10 +3,3 @@ body {
   background-attachment: fixed;
   background-size: cover;
 }
-
-.x {
-  position: absolute;
-  top: 0;
-  right: 0.5em;
-  cursor: pointer;
-}

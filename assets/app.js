@@ -9,6 +9,11 @@ let search = instantsearch({
             return;
         }
 
+        if(!(/^[a-z0-9 ]+\??\:?\!?\.?([ ]+)?$/gi.test(helper.state.query)) {
+            console.log("not alpa")    
+            return;
+        }
+
         helper.search();
     }
 });
@@ -67,5 +72,4 @@ search.addWidget(
         }
     })
 );
-
 search.start();

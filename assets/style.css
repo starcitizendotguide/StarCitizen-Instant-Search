@@ -3,3 +3,7 @@ body {
   background-attachment: fixed;
   background-size: cover;
 }
+
+em {
+    background-color: #FFFF00;
+}

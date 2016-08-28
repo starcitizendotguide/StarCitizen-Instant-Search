@@ -10,7 +10,6 @@ let search = instantsearch({
         }
 
         if(!(/^[a-z0-9 ]+\??\:?\!?\.?([ ]+)?$/gi.test(helper.state.query))) {
-            console.log("not alpa")    
             return;
         }
 

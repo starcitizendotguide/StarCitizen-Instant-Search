@@ -77,7 +77,3 @@ search.addWidget(
     })
 );
 search.start();
-
-$("#testcard").click(function () {
-      $(this).effect("highlight", {}, 3000);
-});

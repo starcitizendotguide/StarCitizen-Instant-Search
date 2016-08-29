@@ -1,16 +1,20 @@
+// scroll
+
+// tooltipped
+
 // instant search <3
 let search = instantsearch({
     appId: 'JXS80KHU8P',
     apiKey: 'ce0e3984181fb0fc71f26a20c56d9725',
     indexName: 'question_',
     urlSync: {
-        useHash: true,
+        useHash: false,
         trackedParameters: ['query'],
         mapping: { 'q': 'question' }
     },
     searchFunction(helper) {
 
-        if (helper.state.query.length < 4) {
+        if (helper.state.query.length < 3) {
             return;
         }
 
@@ -39,15 +43,15 @@ search.addWidget(
         templates: {
             item: function (data) {
                 return `
-			<div class="col s12">
-				<div id="` + data.question + `" class="card hoverable">
-					<div class="card-content">
-						<h5 class="title red-text text-lighten-2">` + data.question + `</h5>
-						<blockquote>` + data.answer + `</blockquote>
-						<p class="grey-text text-darken-1">- asked by ` + data.user + ` in <a href="` + (data.source.startsWith('http') ? data.source + (data.hasOwnProperty('time') ? '?t=' + data.time : '') : '#') + `">` + (data.episode == null ? data.source : data.episode) + `</a></p>
-					</div>
-				</div>
-			</div>
+                <div id="` + data.objectID + `" class="col s12">
+    				<div id="` + data.question + `" class="card hoverable">
+    					<div class="card-content">
+    						<h5 class="title red-text text-lighten-2">` + data.question + `</h5>
+    						<blockquote>` + data.answer + `</blockquote>
+    						<p class="grey-text text-darken-1">- asked by ` + data.user + ` in <a href="` + (data.source.startsWith('http') ? data.source + (data.hasOwnProperty('time') ? '?t=' + data.time : '') : '#') + `">` + (data.episode == null ? data.source : data.episode) + `</a> <span class="tooltipped right" data-tooltip="Object: ` + data.objectID + `"><i class="material-icons">info_outline</i></span></p>
+    					</div>
+    				</div>
+    			</div>
 			`;
             },
             empty: function() {
@@ -76,4 +80,10 @@ search.addWidget(
         }
     })
 );
+
+// Tooltip
+search.on('render', function() {
+    $('.tooltipped').tooltip({});
+});
+
 search.start();

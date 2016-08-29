@@ -44,7 +44,7 @@ search.addWidget(
 					<div class="card-content">
 						<h5 class="title red-text text-lighten-2">` + data.question + `</h5>
 						<blockquote>` + data.answer + `</blockquote>
-						<p class="grey-text text-darken-1">- asked by ` + data.user + ` in <a href="` + (data.source.startsWith('http') ? data.source : '#') + `">` + (data.episode == null ? data.source : data.episode) + `</a></p>
+						<p class="grey-text text-darken-1">- asked by ` + data.user + ` in <a href="` + (data.source.startsWith('http') ? data.source + (data.hasOwnProperty('time') ? '?t=' + data.time : '') : '#') + `">` + (data.episode == null ? data.source : data.episode) + `</a></p>
 					</div>
 				</div>
 			</div>

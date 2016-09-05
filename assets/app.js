@@ -1,7 +1,3 @@
-// scroll
-
-// tooltipped
-
 // instant search <3
 let search = instantsearch({
     appId: 'JXS80KHU8P',

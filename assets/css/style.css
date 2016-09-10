@@ -7,3 +7,8 @@ body {
 em {
     background-color: #FFFF00;
 }
+
+.modal-content iframe {
+    margin: 0 auto;
+    display: block; 
+}

@@ -3,10 +3,13 @@ let search = instantsearch({
     appId: 'JXS80KHU8P',
     apiKey: 'ce0e3984181fb0fc71f26a20c56d9725',
     indexName: 'question_',
+    advancedSyntax: true,
     urlSync: {
         useHash: false,
         trackedParameters: ['query'],
-        mapping: { 'q': 'question' }
+        mapping: {
+            'q': 'question'
+        }
     },
     searchFunction(helper) {
 
@@ -14,7 +17,7 @@ let search = instantsearch({
             return;
         }
 
-        if(!(/^[a-z0-9 ]+\??\:?\!?\.?([ ]+)?$/gi.test(helper.state.query))) {
+        if (!(/^[a-z0-9-" ]+\??\:?\!?\.?([ ]+)?$/gi.test(helper.state.query))) {
             return;
         }
 
@@ -37,14 +40,16 @@ search.addWidget(
         container: '#results',
         hitsPerPage: 10,
         templates: {
-            item: function (data) {
+            item: function(data) {
                 return `
                 <div id="` + data.objectID + `" class="col s12">
     				<div id="` + data.question + `" class="card hoverable">
     					<div class="card-content">
     						<h5 class="title red-text text-lighten-2">` + data.question + `</h5>
     						<blockquote>` + data.answer + `</blockquote>
-    						<p class="grey-text text-darken-1">- ` + (data.hasOwnProperty('user') && data.user !== null ? ` asked by ` + data.user : '') + ` in <a href="` + (data.source.startsWith('http') ? data.source + (data.hasOwnProperty('time') ? '?t=' + data.time : '') : '#') + `">` + (data.episode == null ? data.source : data.episode) + `</a> ` + (data.hasOwnProperty('time') ? `<span class="tooltipped right" data-tooltip="Time feature available (` + data.time + `)"><i class="material-icons">av_timer</i></span>` : ``) + `<span class="tooltipped right" data-tooltip="Object: ` + data.objectID + `"><i class="material-icons">info_outline</i></span><a href="http://imperialnews.network/" class="tooltipped right" data-tooltip="Transcribed by INN"><i class="material-icons">description</i></a></p>
+    						<p class="grey-text text-darken-1">
+                            - ` + (data.hasOwnProperty('user') && data.user !== null ? ` asked by ` + data.user : '') + ` in <a href="#video-modal-` + data.source + '-' + data.time + `">` + (data.episode == null ? data.source : data.episode) + `</a> ` + (data.hasOwnProperty('time') ? `<span class="tooltipped right" data-tooltip="Time feature available (` + data.time + `)"><i class="material-icons">av_timer</i></span>` : ``) + `<span class="tooltipped right" data-tooltip="Object: ` + data.objectID + `"><i class="material-icons">info_outline</i></span><a href="http://imperialnews.network/" class="tooltipped right" data-tooltip="Transcribed by INN"><i class="material-icons">description</i></a>
+                            </p>
     					</div>
     				</div>
     			</div>
@@ -71,7 +76,7 @@ search.addWidget(
         autoHideContainer: false,
         templates: {
             body: function(data) {
-                return `You have ` + data.nbHits + ` results, fetched in ` + data.processingTimeMS + `ms. <span class="ais-search-box--powered-by right">Search by <a class="ais-search-box--powered-by-link" href="https://www.algolia.com/" target="_blank">Algolia</a></span>`
+                return `You have ` + data.nbHits + ` results, fetched in ` + data.processingTimeMS + `ms. <span class="ais-search-box--powered-by right">Search by <a class="ais-search-box--powered-by-link" href="https://www.algolia.com/" target="_blank">Algolia</a></span>`;
             }
         }
     })
@@ -81,5 +86,77 @@ search.addWidget(
 search.on('render', function() {
     $('.tooltipped').tooltip({});
 });
+
+// A $( document ).ready() block.
+$(document).ready(function() {
+
+    $(document).click(function(event) {
+
+        if (!(event.target.tagName.toLowerCase() === 'a')) {
+            return;
+        }
+
+        var hash = event.target.hash;
+
+        if (hash.match('^#video-modal')) {
+
+            var parts = hash.split('-');
+
+            // get the video id
+            var videoID = parts[2].split('/')[3];
+
+            // only time stuff - thank you youtube...
+            var time = (parts[3] == 'undefined' ? null : parts[3]);
+
+            var minutes = 0;
+            var seconds = 0;
+
+            // if we have a timestamp with minutes AND seconds
+            if(!(time === null)) {
+                var mIndex = time.indexOf('m');
+                var sIndex = time.indexOf('s');
+
+                if(!(mIndex == -1) && !(sIndex == -1)) {
+
+                    minutes = parseInt(time.substr(0, mIndex));
+                    seconds = parseInt(time.substr(mIndex + 1, sIndex));
+
+                } else if(!(mIndex == -1)) {
+
+                    // only minutes given
+                    minutes = parseInt(time.substr(0, mIndex));
+
+                } else if(!(sIndex == -1)) {
+
+                    // only seconds given
+                    seconds = parseInt(time.substr(0, sIndex));
+
+                }
+            }
+
+            var offset = (minutes * 60) + seconds;
+
+            // set stuff
+            var content = $('#video-modal-content');
+            content.attr('src', 'https://www.youtube.com/embed/' + videoID + (time == null ? '' : '?start=' + offset));
+
+            $('#video-modal').openModal({
+                complete: function() {
+                    $('#video-modal-content').attr('src', $('#video-modal-content').attr('src'));
+                }
+            });
+
+        }
+
+    });
+
+    // Stop playing the video once the user closes the modal
+    $('#video-modal-close').click(function() {
+        $('#video-modal-content').attr('src', $('#video-modal-content').attr('src'));
+    });
+
+});
+
+
 
 search.start();

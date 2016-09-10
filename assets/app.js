@@ -142,7 +142,7 @@ $(document).ready(function() {
 
             $('#video-modal').openModal({
                 complete: function() {
-                    $('#video-modal-content').attr('src', $('#video-modal-content').attr('src'));
+                    $('#video-modal-content').attr('src', $('#video-modal-content').attr('src').replace('autoplay=1&', ''));
                 }
             });
 

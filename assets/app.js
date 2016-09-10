@@ -38,7 +38,7 @@ search.addWidget(
 search.addWidget(
     instantsearch.widgets.hits({
         container: '#results',
-        hitsPerPage: 10,
+        hitsPerPage: 10000,
         templates: {
             item: function(data) {
                 return `
@@ -138,7 +138,7 @@ $(document).ready(function() {
 
             // set stuff
             var content = $('#video-modal-content');
-            content.attr('src', 'https://www.youtube.com/embed/' + videoID + (time == null ? '' : '?start=' + offset));
+            content.attr('src', 'https://www.youtube.com/embed/' + videoID + (time == null ? '' : '?autoplay=1&amp;showinfo=0&start=' + offset));
 
             $('#video-modal').openModal({
                 complete: function() {

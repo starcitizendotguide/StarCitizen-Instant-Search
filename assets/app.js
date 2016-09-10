@@ -111,11 +111,12 @@ $(document).ready(function() {
             var minutes = 0;
             var seconds = 0;
 
-            // if we have a timestamp with minutes AND seconds
+            // If we even have a valid timestamp
             if(!(time === null)) {
                 var mIndex = time.indexOf('m');
                 var sIndex = time.indexOf('s');
 
+                // if we have a timestamp with minutes AND seconds
                 if(!(mIndex == -1) && !(sIndex == -1)) {
 
                     minutes = parseInt(time.substr(0, mIndex));
@@ -138,7 +139,7 @@ $(document).ready(function() {
 
             // set stuff
             var content = $('#video-modal-content');
-            content.attr('src', 'https://www.youtube.com/embed/' + videoID + (time == null ? '' : '?autoplay=1&amp;showinfo=0&start=' + offset));
+            content.attr('src', 'https://www.youtube.com/embed/' + videoID + '?autoplay=1&amp;showinfo=0' + (offset === 0 ? '' : '&start=' + offset));
 
             $('#video-modal').openModal({
                 complete: function() {

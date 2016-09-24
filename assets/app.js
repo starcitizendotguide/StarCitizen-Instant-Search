@@ -39,6 +39,8 @@ search.addWidget(
 search.on('render', function() {
 
     var hash = window.location.hash.split('#')[1];
+    window.location.hash = '';
+    
     var element = $('#' + hash);
 
     if(!(element.length === 0)) {

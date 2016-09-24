@@ -4,6 +4,7 @@ let search = instantsearch({
     apiKey: 'ce0e3984181fb0fc71f26a20c56d9725',
     indexName: 'question_',
     advancedSyntax: true,
+    hitsPerPage: 10,
     urlSync: {
         useHash: false,
         trackedParameters: ['query'],
@@ -22,6 +23,7 @@ let search = instantsearch({
         }
 
         helper.search();
+
     }
 });
 
@@ -34,11 +36,24 @@ search.addWidget(
     })
 );
 
+search.on('render', function() {
+
+    var hash = window.location.hash.split('#')[1];
+    var element = $('#' + hash);
+
+    if(!(element.length === 0)) {
+        $('html, body').animate({
+                scrollTop: element.offset().top
+        }, 2000);
+    }
+
+});
+
 // add a hits widget
 search.addWidget(
     instantsearch.widgets.hits({
         container: '#results',
-        hitsPerPage: 10000,
+        hitsPerPage: 10,
         templates: {
             item: function(data) {
                 return `
@@ -48,7 +63,7 @@ search.addWidget(
     						<h5 class="title red-text text-lighten-2">` + data.question + `</h5>
     						<blockquote>` + data.answer + `</blockquote>
     						<p class="grey-text text-darken-1">
-                            - ` + (data.hasOwnProperty('user') && data.user !== null ? ` asked by ` + data.user : '') + ` in <a href="#video-modal-` + data.source + '-' + data.time + `">` + (data.episode == null ? data.source : data.episode) + `</a> ` + (data.hasOwnProperty('time') ? `<span class="tooltipped right" data-tooltip="Time feature available (` + data.time + `)"><i class="material-icons">av_timer</i></span>` : ``) + `<span class="tooltipped right" data-tooltip="Object: ` + data.objectID + `"><i class="material-icons">info_outline</i></span><a href="http://imperialnews.network/" class="tooltipped right" data-tooltip="Transcribed by INN"><i class="material-icons">description</i></a>
+                            - ` + (data.hasOwnProperty('user') && data.user !== null ? ` asked by ` + data.user : '') + ` in <a href="#video-modal-` + data.source + '-' + data.time + `">` + (data.episode == null ? data.source : data.episode) + `</a> ` + (data.hasOwnProperty('time') ? `<span class="tooltipped right" data-tooltip="Time feature available (` + data.time + `)"><i class="material-icons">av_timer</i></span>` : ``) + `<span class="tooltipped right" data-tooltip="Object: ` + data.objectID + `"><i class="material-icons">info_outline</i></span><a href="http://imperialnews.network/" class="tooltipped right" data-tooltip="Transcribed by INN"><i class="material-icons">description</i></a><a href="#` + data.objectID + `" class="tooltipped right" data-tooltip="Direct Link"><i class="material-icons">open_in_new</i></a>
                             </p>
     					</div>
     				</div>

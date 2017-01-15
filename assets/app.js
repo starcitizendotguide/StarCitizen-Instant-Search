@@ -40,7 +40,7 @@ search.on('render', function() {
 
     var hash = window.location.hash.split('#')[1];
     window.location.hash = '';
-    
+
     var element = $('#' + hash);
 
     if(!(element.length === 0)) {
@@ -58,6 +58,33 @@ search.addWidget(
         hitsPerPage: 10,
         templates: {
             item: function(data) {
+
+                // parse date
+                var date = null;
+                var split = data.published_at.toString().split(' ');
+                if(split.length === 1) {
+                    date = Date.parse(data.published_at);
+                } else if(split.length === 2) {
+                    var parts = split[0].split('.');
+
+                    date = Date.parse(
+                        parts[2] + '-' + parts[1] + '-' + parts[0] + 'T'
+                        + split[1] + '.000Z'
+                    );
+                }
+
+                var color = '';
+                if(!(date === null)) {
+                    // 31536000 -> 60 * 60 * 24 * 365
+                    var years = Math.floor(((new Date() - date) / 1000) / 31536000);
+                    if(years >= 1) {
+                        color = 'red';
+                    }
+                }
+
+
+                console.log(data.published_at + " -> snowflake");
+
                 return `
                 <div id="` + data.objectID + `" class="col s12">
     				<div id="` + data.question + `" class="card hoverable">
@@ -65,7 +92,7 @@ search.addWidget(
     						<h5 class="title red-text text-lighten-2">` + data.question + `</h5>
     						<blockquote>` + data.answer + `</blockquote>
     						<p class="grey-text text-darken-1">
-                            - ` + (data.hasOwnProperty('user') && data.user !== null ? ` asked by ` + data.user : '') + ` in <a href="#video-modal-` + data.source + '-' + data.time + `">` + (data.episode == null ? data.source : data.episode) + `</a> ` + (data.hasOwnProperty('time') ? `<span class="tooltipped right" data-tooltip="Time feature available (` + data.time + `)"><i class="material-icons">av_timer</i></span>` : ``) + `<span class="tooltipped right" data-tooltip="Object: ` + data.objectID + `"><i class="material-icons">info_outline</i></span><a href="http://imperialnews.network/" class="tooltipped right" data-tooltip="Transcribed by INN"><i class="material-icons">description</i></a><a href="#` + data.objectID + `" class="tooltipped right" data-tooltip="Direct Link"><i class="material-icons">open_in_new</i></a>
+                            - ` + (data.hasOwnProperty('user') && data.user !== null ? ` asked by ` + data.user : '') + ` in <a href="#video-modal-` + data.source + '-' + data.time + `">` + (data.episode == null ? data.source : data.episode) + `</a> ` + (data.hasOwnProperty('time') ? `<span class="tooltipped right" data-tooltip="Time feature available (` + data.time + `)"><i class="material-icons">av_timer</i></span>` : ``) + `<span class="tooltipped right" data-tooltip="Object: ` + data.objectID + `"><i class="material-icons">info_outline</i></span><a href="https://relay.sc/" class="tooltipped right" data-tooltip="Transcribed by relay.sc"><i class="material-icons">description</i></a><a href="#` + data.objectID + `" class="tooltipped right" data-tooltip="Direct Link"><i class="material-icons">open_in_new</i></a>
                             </p>
     					</div>
     				</div>

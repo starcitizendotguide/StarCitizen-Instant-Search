@@ -74,29 +74,46 @@ search.addWidget(
                 }
 
                 var color = '';
+                var old = false;
                 if(!(date === null)) {
                     // 31536000 -> 60 * 60 * 24 * 365
                     var years = Math.floor(((new Date() - date) / 1000) / 31536000);
                     if(years >= 1) {
-                        color = 'red';
+                        color = '#FFFF9D';
+                        old = true;
                     }
                 }
 
-
-                console.log(data.published_at + " -> snowflake");
-
                 return `
                 <div id="` + data.objectID + `" class="col s12">
-    				<div id="` + data.question + `" class="card hoverable">
-    					<div class="card-content">
-    						<h5 class="title red-text text-lighten-2">` + data.question + `</h5>
-    						<blockquote>` + data.answer + `</blockquote>
-    						<p class="grey-text text-darken-1">
-                            - ` + (data.hasOwnProperty('user') && data.user !== null ? ` asked by ` + data.user : '') + ` in <a href="#video-modal-` + data.source + '-' + data.time + `">` + (data.episode == null ? data.source : data.episode) + `</a> ` + (data.hasOwnProperty('time') ? `<span class="tooltipped right" data-tooltip="Time feature available (` + data.time + `)"><i class="material-icons">av_timer</i></span>` : ``) + `<span class="tooltipped right" data-tooltip="Object: ` + data.objectID + `"><i class="material-icons">info_outline</i></span><a href="https://relay.sc/" class="tooltipped right" data-tooltip="Transcribed by relay.sc"><i class="material-icons">description</i></a><a href="#` + data.objectID + `" class="tooltipped right" data-tooltip="Direct Link"><i class="material-icons">open_in_new</i></a>
+                    <div id="` + data.question + `" class="card hoverable" style="background: ` + color + `;">
+                        <div class="card-content">
+                            ` + (old === true ? '<p><i class="material-icons">warning</i><b>This question is ' + years + ' year(s) old and might contain outdated information.</b></p>' : '') +`
+                            <h5 class="title red-text text-lighten-2">` + data.question + `</h5>
+                            <blockquote>` + data.answer + `</blockquote>
+                            <p class="grey-text text-darken-1">
+                                - ` + (data.hasOwnProperty('user') && data.user !== null ?
+                                    ` asked by ` + data.user : '')
+                                     + `
+                                     in <a
+                                        href="#video-modal-` + data.source + '-' + data.time + `">` + (data.episode == null
+                                        ? data.source : data.episode)
+                                        + `</a> ` + (data.hasOwnProperty('time')
+                                        ? `<span class="tooltipped right"
+                                        data-tooltip="Time feature available (` + data.time + `)"><i class="material-icons">av_timer</i></span>`
+                                        : ``) + `<span class="tooltipped right"
+                                        data-tooltip="Object: ` + data.objectID + `"><i class="material-icons">info_outline</i></span>
+                                        <a href="https://relay.sc/" class="tooltipped right"
+                                        data-tooltip="Transcribed by relay.sc"><i class="material-icons">description</i>
+                                        </a>
+                                        <a href="#` + data.objectID + `"
+                                        class="tooltipped right"
+                                        data-tooltip="Direct Link"><i class="material-icons">open_in_new</i>
+                                    </a>
                             </p>
-    					</div>
-    				</div>
-    			</div>
+                        </div>
+                    </div>
+                </div>
 			`;
             },
             empty: function() {

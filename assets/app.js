@@ -14,10 +14,6 @@ let search = instantsearch({
     },
     searchFunction(helper) {
 
-        if (helper.state.query.length < 3) {
-            return;
-        }
-
         if (!(/^[a-z0-9-" ]+\??\:?\!?\.?([ ]+)?$/gi.test(helper.state.query))) {
             return;
         }
@@ -77,7 +73,7 @@ search.addWidget(
                 var old = false;
                 if(!(date === null)) {
                     // 31536000 -> 60 * 60 * 24 * 365
-                    var years = Math.floor(((new Date() - date) / 1000) / 31536000);
+                    var years = ((new Date() - date) / 1000) / 31536000;
                     if(years >= 1) {
                         color = '#FFFF9D';
                         old = true;
@@ -88,7 +84,7 @@ search.addWidget(
                 <div id="` + data.objectID + `" class="col s12">
                     <div id="` + data.question + `" class="card hoverable" style="background: ` + color + `;">
                         <div class="card-content">
-                            ` + (old === true ? '<p><i class="material-icons">warning</i><b>This question is ' + years + ' year(s) old and might contain outdated information.</b></p>' : '') +`
+                            ` + (old === true ? '<p><i class="material-icons">warning</i><b>This question is ' + Math.round(years) + ' year(s) old and might contain outdated information.</b></p>' : '') +`
                             <h5 class="title red-text text-lighten-2">` + data.question + `</h5>
                             <blockquote>` + data.answer + `</blockquote>
                             <p class="grey-text text-darken-1">
@@ -137,7 +133,7 @@ search.addWidget(
         autoHideContainer: false,
         templates: {
             body: function(data) {
-                return `You have ` + data.nbHits + ` results, fetched in ` + data.processingTimeMS + `ms. <span class="ais-search-box--powered-by right">powered by <a class="ais-search-box--powered-by-link" href="https://www.algolia.com/" target="_blank">Algolia</a></span>`;
+                return `You have ` + (data.nbHits > 10 ? 10 : data.nbHits) + ` results, fetched in ` + data.processingTimeMS + `ms. <span class="ais-search-box--powered-by right">powered by <a class="ais-search-box--powered-by-link" href="https://www.algolia.com/" target="_blank">Algolia</a></span>`;
             }
         }
     })

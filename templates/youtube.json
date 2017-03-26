@@ -1,0 +1,12 @@
+{
+  "question": "<question>",
+  "answer": "<answer>", 
+  "published_at": "<time>",
+  "title": "<title>",
+  "source": "<youtube-video-link>",
+  "transcript": "<transcript-link>",
+  "type": "youtube",
+  "user": "<username-or-do-not-include-the-field>",
+  "time": "<timestamp-or-do-not-incude-the-field>"
+}
+

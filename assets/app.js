@@ -2,7 +2,7 @@
 let search = instantsearch({
     appId: 'JXS80KHU8P',
     apiKey: 'ce0e3984181fb0fc71f26a20c56d9725',
-    indexName: 'question_',
+    indexName: 'question_new_',
     advancedSyntax: true,
     hitsPerPage: 10,
     urlSync: {
@@ -55,57 +55,40 @@ search.addWidget(
         templates: {
             item: function(data) {
 
-                // parse date
-                var date = null;
-                var split = data.published_at.toString().split(' ');
-                if(split.length === 1) {
-                    date = Date.parse(data.published_at);
-                } else if(split.length === 2) {
-                    var parts = split[0].split('.');
+                var source = 'UNKOWN';
+                var transcript = '';
 
-                    date = Date.parse(
-                        parts[2] + '-' + parts[1] + '-' + parts[0] + 'T'
-                        + split[1] + '.000Z'
-                    );
-                }
+                switch(data.type) {
 
-                var color = '';
-                var old = false;
-                if(!(date === null)) {
-                    // 31536000 -> 60 * 60 * 24 * 365
-                    var years = ((new Date() - date) / 1000) / 31536000;
-                    if(years >= 1) {
-                        color = '#FFFF9D';
-                        old = true;
+                    case "youtube": {
+                        source = '<a href="#video-modal-' + data.source + "-" + data.time + '">' + (data.title == null ? data.source : data.title)  + '</a>';
+
+                        var parser = document.createElement('a');
+                        parser.href = data.transcript;
+                        transcript = '<a target="_blank" href="' + data.transcript + '" class="tooltipped right" data-tooltip="Transcribed by ' + parser.hostname + '"><i class="material-icons">description</i></a>';
                     }
+                    break;
+
+                    case "article": {
+                        source = '<a target="_blank" href="' + data.source + '">' + data.title + '</a>';
+                    }
+                    break;
+
                 }
 
                 return `
                 <div id="` + data.objectID + `" class="col s12">
-                    <div id="` + data.question + `" class="card hoverable" style="background: ` + color + `;">
+                    <div id="` + data.question + `" class="card hoverable">
                         <div class="card-content">
-                            ` + (old === true ? '<p><i class="material-icons">warning</i><b>This question is ' + Math.round(years) + ' year(s) old and might contain outdated information.</b></p>' : '') +`
                             <h5 class="title red-text text-lighten-2">` + data.question + `</h5>
                             <blockquote>` + data.answer + `</blockquote>
                             <p class="grey-text text-darken-1">
                                 - ` + (data.hasOwnProperty('user') && data.user !== null ?
                                     ` asked by ` + data.user : '')
-                                     + `
-                                     in <a
-                                        href="#video-modal-` + data.source + '-' + data.time + `">` + (data.episode == null
-                                        ? data.source : data.episode)
-                                        + `</a> ` + (data.hasOwnProperty('time')
-                                        ? `<span class="tooltipped right"
-                                        data-tooltip="Time feature available (` + data.time + `)"><i class="material-icons">av_timer</i></span>`
-                                        : ``) + `<span class="tooltipped right"
-                                        data-tooltip="Object: ` + data.objectID + `"><i class="material-icons">info_outline</i></span>
-                                        <a href="https://relay.sc/" class="tooltipped right"
-                                        data-tooltip="Transcribed by relay.sc"><i class="material-icons">description</i>
-                                        </a>
-                                        <a href="#` + data.objectID + `"
-                                        class="tooltipped right"
-                                        data-tooltip="Direct Link"><i class="material-icons">open_in_new</i>
-                                    </a>
+                                     + ` in ` + source +
+                                     `<span class="tooltipped right" data-tooltip="Object: ` + data.objectID + `"><i class="material-icons">info_outline</i></span>
+                                    ` + transcript + `
+                                    <a href="#` + data.objectID + `" class="tooltipped right" data-tooltip="Direct Link"><i class="material-icons">open_in_new</i></a>
                             </p>
                         </div>
                     </div>
@@ -162,7 +145,7 @@ $(document).ready(function() {
             // get the video id
             var videoID = parts[2].split('/')[3];
 
-            // only time stuff - thank you youtube...
+            // only time stuff - thank you, youtube...
             var time = (parts[3] == 'undefined' ? null : parts[3]);
 
             var minutes = 0;

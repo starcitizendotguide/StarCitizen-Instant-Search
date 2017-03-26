@@ -1,0 +1,9 @@
+{
+  "question": "<question>",
+  "answer": "<answer>", 
+  "published_at": "<time>",
+  "title": "<title>",
+  "source": "<article-link>",
+  "type": "article",
+  "user": "<username-or-do-not-include-the-field>",
+}

@@ -11,15 +11,6 @@ let search = instantsearch({
         mapping: {
             'q': 'question'
         }
-    },
-    searchFunction(helper) {
-
-        if (!(/^[a-z0-9-" ]+\??\:?\!?\.?([ ]+)?$/gi.test(helper.state.query))) {
-            return;
-        }
-
-        helper.search();
-
     }
 });
 

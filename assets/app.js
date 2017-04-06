@@ -136,8 +136,11 @@ $(document).ready(function() {
             // get the video id
             var videoID = parts[2].split('/')[3];
 
-            // only time stuff - thank you, youtube...
-            var time = (parts[3] == 'undefined' ? null : parts[3]);
+            // only time stuff - thank you, youtube... ;)
+            var time = null;
+            if(parts.length > 3) {
+                time = parts[parts.length - 1];
+            }
 
             var minutes = 0;
             var seconds = 0;

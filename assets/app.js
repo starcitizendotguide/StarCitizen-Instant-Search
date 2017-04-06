@@ -52,7 +52,7 @@ search.addWidget(
                 switch(data.type) {
 
                     case "youtube": {
-                        source = '<a href="#video-modal-' + data.source + "-" + data.time + '">' + (data.title == null ? data.source : data.title)  + '</a>';
+                        source = '<a href="#video-modal{' + data.source + "{" + data.time + '">' + (data.title == null ? data.source : data.title)  + '</a>';
 
                         var parser = document.createElement('a');
                         parser.href = data.transcript;
@@ -131,14 +131,14 @@ $(document).ready(function() {
 
         if (hash.match('^#video-modal')) {
 
-            var parts = hash.split('-');
+            var parts = hash.split('{');
 
             // get the video id
-            var videoID = parts[2].split('/')[3];
+            var videoID = parts[1].split('/')[3];
 
             // only time stuff - thank you, youtube... ;)
             var time = null;
-            if(parts.length > 3) {
+            if(parts.length > 2) {
                 time = parts[parts.length - 1];
             }
 

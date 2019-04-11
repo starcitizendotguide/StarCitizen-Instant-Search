@@ -23,15 +23,6 @@ search.addWidget(
     })
 );
 
-//
-search.addWidget(infiniteScrollWidget({
-    container: '#hits',
-    templates: {
-        items: document.querySelector('#hits-template').innerHTML,
-        empty: document.querySelector('#no-results-template').innerHTML
-    }
-}));
-
 search.on('render', function() {
 
     var hash = window.location.hash.split('#')[1];

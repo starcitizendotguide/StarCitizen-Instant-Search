@@ -1,14 +1,43 @@
 body {
-  background-image: url('header.jpg');
+  background-image: url('header.png');
   background-attachment: fixed;
   background-size: cover;
+  color: #DEE2E6;
 }
 
-em {
-    background-color: #FFFF00;
+::-moz-placeholder,
+.title {
+    color: #949EA8;
+    opacity: 1;
+}
+
+a:link{
+}
+
+a:hover {
+  color: #FFF;
 }
 
 .modal-content iframe {
     margin: 0 auto;
     display: block; 
+}
+
+blockquote {
+    margin: 20px 0;
+    padding-left: 1.5rem;
+    border-left: 5px solid #949EA8;
+}
+
+.card-content {
+    background-color: #1f2831;
+}
+
+.right {
+    float: right !important;
+}
+
+.credits {
+    font-size: 90%;
+    margin-bottom: 10px;
 }

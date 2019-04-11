@@ -23,6 +23,15 @@ search.addWidget(
     })
 );
 
+//
+search.addWidget(infiniteScrollWidget({
+    container: '#hits',
+    templates: {
+        items: document.querySelector('#hits-template').innerHTML,
+        empty: document.querySelector('#no-results-template').innerHTML
+    }
+}));
+
 search.on('render', function() {
 
     var hash = window.location.hash.split('#')[1];
@@ -67,7 +76,7 @@ search.addWidget(
 
                 }
 
-                return "<div id=\"" + data.objectID + "\" class=\"col s12\"><div id=\"" + data.question + "\" class=\"card hoverable\"><div class=\"card-content\"><h5 class=\"title red-text text-lighten-2\">" + data.question + "</h5><blockquote>" + data.answer + "</blockquote><p class=\"grey-text text-darken-1\">- " + (data.hasOwnProperty('user') && data.user !== null ? " asked by " + data.user : "") + " in " + source + "<span class=\"tooltipped right\" data-tooltip=\"Object: " + data.objectID + "\"><i class=\"material-icons\">info_outline</i></span> " + transcript + " <a href=\"#" + data.objectID + "\" class=\"tooltipped right\" data-tooltip=\"Direct Link\"><i class=\"material-icons\">open_in_new</i></a></p></div></div></div>";
+                return "<div id=\"" + data.objectID + "\" class=\"col s12\"><div id=\"" + data.question + "\" class=\"card hoverable\"><div class=\"card-content\"><h5 class=\"title\">" + data.question + "</h5><blockquote>" + data.answer + "</blockquote><p class=\"grey-text text-darken-1\">- " + (data.hasOwnProperty('user') && data.user !== null ? " asked by " + data.user : "") + " in " + source + "<span class=\"tooltipped right\" data-tooltip=\"Object: " + data.objectID + "\"><i class=\"material-icons\">info_outline</i></span> " + transcript + " <a href=\"#" + data.objectID + "\" class=\"tooltipped right\" data-tooltip=\"Direct Link\"><i class=\"material-icons\">open_in_new</i></a></p></div></div></div>";
             },
             empty: function() {
                 return "<div class=\"col s12\"><div class=\"card hoverable\"><div class=\"card-content\"><p class=\"grey-text text-darken-1\">No Results.</p></div></div></div>";
@@ -76,17 +85,6 @@ search.addWidget(
     })
 );
 
-search.addWidget(
-    instantsearch.widgets.stats({
-        container: '#stats',
-        autoHideContainer: false,
-        templates: {
-            body: function(data) {
-                return 'You have ' + (data.nbHits > 10 ? 10 : data.nbHits) + ' results, fetched in ' + data.processingTimeMS + 'ms. <span class="ais-search-box--powered-by right">powered by <a class="ais-search-box--powered-by-link" href="https://www.algolia.com/" target="_blank">Algolia</a></span>';
-            }
-        }
-    })
-);
 
 // Tooltip
 search.on('render', function() {

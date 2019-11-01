@@ -41,3 +41,10 @@ blockquote {
     font-size: 90%;
     margin-bottom: 10px;
 }
+
+.moving-notice {
+    font-size: 110%;
+    margin-bottom: 10px;
+    border: 3px dashed red;
+    padding: 10px;
+}

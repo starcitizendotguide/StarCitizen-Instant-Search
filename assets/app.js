@@ -5,7 +5,7 @@ let search = instantsearch({
     indexName: 'question_new_',
     advancedSyntax: true,
     hitsPerPage: 10,
-    urlSync: {
+    routing: {
         useHash: false,
         trackedParameters: ['query'],
         mapping: {
@@ -24,7 +24,7 @@ search.addWidget(
 );
 
 search.on('render', function() {
-
+	$('.tooltipped').tooltip({});
     var hash = window.location.hash.split('#')[1];
     window.location.hash = '';
 
@@ -76,11 +76,6 @@ search.addWidget(
     })
 );
 
-
-// Tooltip
-search.on('render', function() {
-    $('.tooltipped').tooltip({});
-});
 
 // A $( document ).ready() block.
 $(document).ready(function() {

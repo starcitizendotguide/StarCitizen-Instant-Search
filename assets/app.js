@@ -1,13 +1,13 @@
 // instant search <3
 
 document.addEventListener('DOMContentLoaded', function() {
-    {
-        M.Modal.init(document.querySelectorAll('.modal'), {});
-    }
-    {
-        var elems = document.querySelectorAll('.tooltipped');
-        var instances = M.Tooltip.init(elems, {});
-    }
+    M.Modal.init(document.querySelectorAll('.modal'), {
+        onCloseStart: function (element) {
+            // When video modal is closed stop playing the video
+            document.getElementById('video-modal-content').innerHTML = '';
+        }
+    });
+    M.Tooltip.init(document.querySelectorAll('.tooltipped'), {});
 });
 
 let search = instantsearch({
@@ -137,9 +137,11 @@ search.addWidget(
 
             // set stuff
             const content = document.getElementById('video-modal-content');
-            content.setAttribute('src', 'https://www.youtube.com/embed/' + videoID + '?autoplay=1&amp;showinfo=0' + (offset === 0 ? '' : '&start=' + offset));
-
-            var instance = M.Modal.getInstance(document.getElementById('video-modal'));
+            const youtubeUrl = 'https://www.youtube.com/embed/' + videoID + '?autoplay=1&amp;showinfo=0' + (offset === 0 ? '' : '&start=' + offset);
+            //content.setAttribute('src', );
+            content.innerHTML = '<iframe id="video-modal-content" width="853" height="480" src="' + youtubeUrl + '"\n' +
+                'frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+            const instance = M.Modal.getInstance(document.getElementById('video-modal'));
             instance.open();
 
         }
@@ -148,7 +150,7 @@ search.addWidget(
 
     document.getElementById('video-modal').addEventListener('click', function (event) {
         const element = document.getElementById('video-modal-content');
-        element.setAttribute('src', element.getAttribute('src'));
+        element.innerHTML = '';
     });
 
     search.start();

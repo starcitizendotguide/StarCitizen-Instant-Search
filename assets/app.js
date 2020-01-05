@@ -98,6 +98,7 @@ $(document).ready(function() {
             // only time stuff - thank you, youtube... ;)
             var time = null;
             if(parts.length > 2) {
+
                 time = parts[parts.length - 1];
             }
 

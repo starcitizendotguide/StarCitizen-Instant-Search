@@ -1,8 +1,13 @@
 // instant search <3
 
 document.addEventListener('DOMContentLoaded', function() {
-    var elems = document.querySelectorAll('.modal');
-    var instances = M.Modal.init(elems, {});
+    {
+        M.Modal.init(document.querySelectorAll('.modal'), {});
+    }
+    {
+        var elems = document.querySelectorAll('.tooltipped');
+        var instances = M.Tooltip.init(elems, {});
+    }
 });
 
 let search = instantsearch({
@@ -30,16 +35,12 @@ search.addWidget(
 );
 
 search.on('render', function() {
-	$('.tooltipped').tooltip({});
-    var hash = window.location.hash.split('#')[1];
+    let hash = window.location.hash.split('#')[1];
     window.location.hash = '';
 
-    var element = $('#' + hash);
-
-    if(!(element.length === 0)) {
-        $('html, body').animate({
-                scrollTop: element.offset().top
-        }, 2000);
+    const element = document.getElementById(hash);
+    if(element !== null) {
+        element.scrollIntoView();
     }
 
 });
@@ -82,10 +83,8 @@ search.addWidget(
     })
 );
 
-
-$(document).ready(function() {
-
-    $(document).click(function(event) {
+(function() {
+    document.addEventListener("click", function(event) {
 
         if (!(event.target.tagName.toLowerCase() === 'a')) {
             return;
@@ -137,10 +136,9 @@ $(document).ready(function() {
             var offset = (minutes * 60) + seconds;
 
             // set stuff
-            var content = $('#video-modal-content');
-            content.attr('src', 'https://www.youtube.com/embed/' + videoID + '?autoplay=1&amp;showinfo=0' + (offset === 0 ? '' : '&start=' + offset));
+            const content = document.getElementById('video-modal-content');
+            content.setAttribute('src', 'https://www.youtube.com/embed/' + videoID + '?autoplay=1&amp;showinfo=0' + (offset === 0 ? '' : '&start=' + offset));
 
-            console.log("hey");
             var instance = M.Modal.getInstance(document.getElementById('video-modal'));
             instance.open();
 
@@ -148,11 +146,10 @@ $(document).ready(function() {
 
     });
 
-    // Stop playing the video once the user closes the modal
-    $('#video-modal-close').click(function() {
-        $('#video-modal-content').attr('src', $('#video-modal-content').attr('src'));
+    document.getElementById('video-modal').addEventListener('click', function (event) {
+        const element = document.getElementById('video-modal-content');
+        element.setAttribute('src', element.getAttribute('src'));
     });
 
     search.start();
-});
-
+})();

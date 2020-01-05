@@ -67,6 +67,7 @@ blockquote {
     font-style: normal;
     font-weight: 400;
     src: url('../fonts/google_icons.woff2') format('woff2');
+    font-display: swap;
 }
 
 .material-icons {

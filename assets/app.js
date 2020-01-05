@@ -77,7 +77,6 @@ search.addWidget(
 );
 
 
-// A $( document ).ready() block.
 $(document).ready(function() {
 
     $(document).click(function(event) {
@@ -150,8 +149,6 @@ $(document).ready(function() {
         $('#video-modal-content').attr('src', $('#video-modal-content').attr('src'));
     });
 
+	search.start();
 });
 
-
-
-search.start();

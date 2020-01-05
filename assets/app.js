@@ -90,7 +90,7 @@ search.addWidgets([
 
 search.on('render', function() {
     let hash = window.location.hash.split('#')[1];
-    window.location.hash = '';
+    //window.location.hash = '';
 
     const element = document.getElementById(hash);
     if(element !== null) {

@@ -10,46 +10,50 @@ document.addEventListener('DOMContentLoaded', function() {
     M.Tooltip.init(document.querySelectorAll('.tooltipped'), {});
 });
 
-let search = instantsearch({
-    appId: 'JXS80KHU8P',
-    apiKey: 'ce0e3984181fb0fc71f26a20c56d9725',
+const searchClient = algoliasearch(
+    'JXS80KHU8P',
+    'ce0e3984181fb0fc71f26a20c56d9725'
+);
+
+const search = instantsearch({
     indexName: 'question_new_',
-    advancedSyntax: true,
-    hitsPerPage: 10,
+    searchClient,
     routing: {
-        useHash: false,
-        trackedParameters: ['query'],
-        mapping: {
-            'q': 'question'
-        }
+        stateMapping: instantsearch.stateMappings.singleIndex('question_new_'),
+        router: instantsearch.routers.history({
+            createURL({ qsModule, routeState, location }) {
+                const baseUrl = location.origin;
+                console.log(routeState);
+                const question = encodeURIComponent(routeState.query);
+                console.log(question);
+                return `${baseUrl}?question=${question}`;
+            },
+
+            parseURL({ qsModule, location }) {
+                const { question } = qsModule.parse(location.search.slice(1));
+                if(typeof question === 'undefined')
+                {
+                    return {
+                        query: decodeURIComponent('')
+                    };
+                }
+                return {
+                    query: decodeURIComponent(question),
+                };
+            }
+        }),
     }
 });
 
-// add a searchBox widget
-search.addWidget(
+search.addWidgets([
     instantsearch.widgets.searchBox({
         autofocus: true,
         container: '#search',
-        placeholder: 'What is your question?'
-    })
-);
-
-search.on('render', function() {
-    let hash = window.location.hash.split('#')[1];
-    window.location.hash = '';
-
-    const element = document.getElementById(hash);
-    if(element !== null) {
-        element.scrollIntoView();
-    }
-
-});
-
-// add a hits widget
-search.addWidget(
+        placeholder: 'What is your question?',
+        searchAsYouType: true,
+    }),
     instantsearch.widgets.hits({
         container: '#results',
-        hitsPerPage: 10,
         templates: {
             item: function(data) {
 
@@ -65,12 +69,12 @@ search.addWidget(
                         parser.href = data.transcript;
                         transcript = '<a target="_blank" href="' + data.transcript + '" class="tooltipped right" data-tooltip="Transcribed by ' + parser.hostname + '"><i class="material-icons">description</i></a>';
                     }
-                    break;
+                        break;
 
                     case "article": {
                         source = '<a target="_blank" href="' + data.source + '">' + data.title + '</a>';
                     }
-                    break;
+                        break;
 
                 }
 
@@ -81,7 +85,19 @@ search.addWidget(
             }
         }
     })
-);
+]);
+
+
+search.on('render', function() {
+    let hash = window.location.hash.split('#')[1];
+    window.location.hash = '';
+
+    const element = document.getElementById(hash);
+    if(element !== null) {
+        element.scrollIntoView();
+    }
+
+});
 
 (function() {
     document.addEventListener("click", function(event) {
@@ -153,5 +169,6 @@ search.addWidget(
         element.innerHTML = '';
     });
 
-    search.start();
 })();
+
+search.start();

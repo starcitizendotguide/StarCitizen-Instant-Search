@@ -1,4 +1,10 @@
 // instant search <3
+
+document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.modal');
+    var instances = M.Modal.init(elems, {});
+});
+
 let search = instantsearch({
     appId: 'JXS80KHU8P',
     apiKey: 'ce0e3984181fb0fc71f26a20c56d9725',
@@ -67,7 +73,7 @@ search.addWidget(
 
                 }
 
-                return "<div id=\"" + data.objectID + "\" class=\"col s12\"><div id=\"" + data.question + "\" class=\"card hoverable\"><div class=\"card-content\"><h5 class=\"title\">" + data.question + "</h5><blockquote>" + data.answer + "</blockquote><p class=\"grey-text text-darken-1\">- " + (data.hasOwnProperty('user') && data.user !== null ? " asked by " + data.user : "") + " in " + source + "<span class=\"tooltipped right\" data-tooltip=\"Object: " + data.objectID + "\"><i class=\"material-icons\">info_outline</i></span> " + transcript + " <a href=\"#" + data.objectID + "\" class=\"tooltipped right\" data-tooltip=\"Direct Link\"><i class=\"material-icons\">open_in_new</i></a></p></div></div></div>";
+                return "<div id=\"" + data.objectID + "\" class=\"col s12\"><div id=\"" + data.question + "\" class=\"card hoverable\"><div class=\"card-content\"><h5 class=\"title\">" + data.question + "</h5><blockquote>" + data.answer + "</blockquote><p class=\"grey-text text-darken-1\">- " + (data.hasOwnProperty('user') && data.user !== null ? " asked by " + data.user : "") + " in " + source + "<span class=\"tooltipped right\" data-tooltip=\"Object: " + data.objectID + "\"><i class=\"material-icons\">info_outline</i></span> " + transcript + " <a rel='modal:open' href=\"#" + data.objectID + "\" class=\"tooltipped right\" data-tooltip=\"Direct Link\"><i class=\"material-icons\">open_in_new</i></a></p></div></div></div>";
             },
             empty: function() {
                 return "<div class=\"col s12\"><div class=\"card hoverable\"><div class=\"card-content\"><p class=\"grey-text text-darken-1\">No Results.</p></div></div></div>";
@@ -134,11 +140,9 @@ $(document).ready(function() {
             var content = $('#video-modal-content');
             content.attr('src', 'https://www.youtube.com/embed/' + videoID + '?autoplay=1&amp;showinfo=0' + (offset === 0 ? '' : '&start=' + offset));
 
-            $('#video-modal').openModal({
-                complete: function() {
-                    $('#video-modal-content').attr('src', $('#video-modal-content').attr('src').replace('autoplay=1&', ''));
-                }
-            });
+            console.log("hey");
+            var instance = M.Modal.getInstance(document.getElementById('video-modal'));
+            instance.open();
 
         }
 
@@ -149,6 +153,6 @@ $(document).ready(function() {
         $('#video-modal-content').attr('src', $('#video-modal-content').attr('src'));
     });
 
-	search.start();
+    search.start();
 });
 

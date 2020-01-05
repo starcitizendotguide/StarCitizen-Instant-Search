@@ -5,6 +5,10 @@ body {
   color: #DEE2E6;
 }
 
+.ais-search-box {
+    max-width: none !important;
+}
+
 ::-moz-placeholder,
 .title {
     color: #949EA8;
@@ -16,6 +20,14 @@ a:link{
 
 a:hover {
   color: #FFF;
+}
+
+.modal {
+    background: none;
+}
+
+.modal-footer {
+    background: none !important;
 }
 
 .modal-content iframe {
@@ -47,4 +59,28 @@ blockquote {
     margin-bottom: 10px;
     border: 3px dashed red;
     padding: 10px;
+}
+
+/* fallback */
+@font-face {
+    font-family: 'Material Icons';
+    font-style: normal;
+    font-weight: 400;
+    src: url('../fonts/google_icons.woff2') format('woff2');
+}
+
+.material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -moz-font-feature-settings: 'liga';
+    -moz-osx-font-smoothing: grayscale;
 }

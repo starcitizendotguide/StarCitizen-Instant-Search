@@ -32,7 +32,7 @@ a:hover {
 
 .modal-content iframe {
     margin: 0 auto;
-    display: block; 
+    display: block;
 }
 
 blockquote {
@@ -84,4 +84,8 @@ blockquote {
     direction: ltr;
     -moz-font-feature-settings: 'liga';
     -moz-osx-font-smoothing: grayscale;
+}
+
+#results ol {
+    list-style-type: none;
 }

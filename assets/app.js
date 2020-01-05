@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('video-modal-content').innerHTML = '';
         }
     });
-    M.Tooltip.init(document.querySelectorAll('.tooltipped'), {});
 });
 
 const searchClient = algoliasearch(
@@ -49,12 +48,13 @@ search.addWidgets([
         container: '#search',
         placeholder: 'What is your question?',
         searchAsYouType: true,
+        showReset: false,
+        showSubmit: false,
     }),
     instantsearch.widgets.hits({
         container: '#results',
         templates: {
             item: function(data) {
-
                 var source = 'UNKOWN';
                 var transcript = '';
 
@@ -72,21 +72,45 @@ search.addWidgets([
                     case "article": {
                         source = '<a target="_blank" href="' + data.source + '">' + data.title + '</a>';
                     }
-                        break;
+                        break
 
                 }
 
-                return "<div id=\"" + data.objectID + "\" class=\"col s12\"><div id=\"" + data.question + "\" class=\"card hoverable\"><div class=\"card-content\"><h5 class=\"title\">" + data.question + "</h5><blockquote>" + data.answer + "</blockquote><p class=\"grey-text text-darken-1\">- " + (data.hasOwnProperty('user') && data.user !== null ? " asked by " + data.user : "") + " in " + source + "<span class=\"tooltipped right\" data-tooltip=\"Object: " + data.objectID + "\"><i class=\"material-icons\">info_outline</i></span> " + transcript + " <a rel='modal:open' href=\"#" + data.objectID + "\" class=\"tooltipped right\" data-tooltip=\"Direct Link\"><i class=\"material-icons\">open_in_new</i></a></p></div></div></div>";
+
+                return `
+                <div id="${data.objectID}">
+                    <div class="card hoverable">
+                        <div class="card-content">
+                            <h5 class="title">${data.question}</h5>
+                            <blockquote>${data.answer}</blockquote>
+                            <p class="grey-text text-darken-1">
+                                -  asked ${data.user ? ('by ' + data.user) : ''} in ${source}
+                                <span class="tooltipped right" data-tooltip="Object: ${data.objectID}"><i class="material-icons">info_outline</i></span>
+                                ${transcript}
+                                <a href="#${data.objectID}" class="tooltipped right" data-tooltip="Direct Link"><i class="material-icons">open_in_new</i></a>
+                        </div>
+                    </div>
+                </div>            
+            `;
+
             },
-            empty: function() {
-                return "<div class=\"col s12\"><div class=\"card hoverable\"><div class=\"card-content\"><p class=\"grey-text text-darken-1\">No Results.</p></div></div></div>";
-            }
+            empty: `
+            <div class="col s12">
+                <div class="card hoverable">
+                    <div class="card-content">
+                        <p class="grey-text text-darken-1">No Results.</p>
+                    </div>
+                </div>
+            </div>
+            `
         }
     })
 ]);
 
 
 search.on('render', function() {
+    M.Tooltip.init(document.querySelectorAll('.tooltipped'), {});
+
     let hash = window.location.hash.split('#')[1];
     //window.location.hash = '';
 

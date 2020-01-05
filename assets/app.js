@@ -23,9 +23,7 @@ const search = instantsearch({
         router: instantsearch.routers.history({
             createURL({ qsModule, routeState, location }) {
                 const baseUrl = location.origin;
-                console.log(routeState);
                 const question = encodeURIComponent(routeState.query);
-                console.log(question);
                 return `${baseUrl}?question=${question}`;
             },
 

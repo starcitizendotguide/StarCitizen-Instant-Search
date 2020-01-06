@@ -54,6 +54,9 @@ search.addWidgets([
         searchAsYouType: true,
         showReset: false,
         showSubmit: false,
+        cssClasses: {
+            input: 'search-box'
+        }
     }),
     instantsearch.widgets.poweredBy({
         container: '.powered-by-algolia',
@@ -131,18 +134,19 @@ search.on('render', function() {
     }
 
     //---
-    {
+    if(false) {
         const element = document.getElementsByClassName('ais-Hits-list');
         if(element.length === 1)
         {
             element[0].outerHTML = element[0].outerHTML.replace(/<ol/gm, '<ul')
-                                                        .replace(/<\/ol>/gm, '</ul>');
+                .replace(/<\/ol>/gm, '</ul>');
         }
     }
 
 });
 
 (function() {
+
     document.addEventListener("click", function(event) {
 
         if (!(event.target.tagName.toLowerCase() === 'a')) {

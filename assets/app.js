@@ -117,14 +117,27 @@ search.addWidgets([
 
 
 search.on('render', function() {
+    //---
     M.Tooltip.init(document.querySelectorAll('.tooltipped'), {});
 
-    let hash = window.location.hash.split('#')[1];
-    //window.location.hash = '';
+    //---
+    {
+        let hash = window.location.hash.split('#')[1];
+        //window.location.hash = '';
+        const element = document.getElementById(hash);
+        if(element !== null) {
+            element.scrollIntoView();
+        }
+    }
 
-    const element = document.getElementById(hash);
-    if(element !== null) {
-        element.scrollIntoView();
+    //---
+    {
+        const element = document.getElementsByClassName('ais-Hits-list');
+        if(element.length === 1)
+        {
+            element[0].outerHTML = element[0].outerHTML.replace(/<ol/gm, '<ul')
+                                                        .replace(/<\/ol>/gm, '</ul>');
+        }
     }
 
 });

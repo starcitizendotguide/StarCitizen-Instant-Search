@@ -72,18 +72,24 @@ search.addWidgets([
                 switch(data.type) {
 
                     case "youtube": {
-                        source = '<a href="#video-modal{' + data.source + "{" + data.time + '">' + (data.title == null ? data.source : data.title)  + '</a>';
+                        const title = (data.title == null ? data.source : data.title);
+                        if(typeof data.time === 'undefined')
+                        {
+                            source = `<a class="video-modal-link" data-source="${data.source}">${title}</a>`;
+                        }
+                        else
+                        {
+                            source = `<a class="video-modal-link" data-source="${data.source}" data-time="${data.time}">${title}</a>`;
+                        }
 
                         var parser = document.createElement('a');
                         parser.href = data.transcript;
-                        transcript = '<a target="_blank" href="' + data.transcript + '" class="tooltipped right" data-tooltip="Transcribed by ' + parser.hostname + '"><i class="material-icons">description</i></a>';
-                    }
-                        break;
+                        transcript = `<a target="_blank" href="${data.transcript}" class="tooltipped right" data-tooltip="Transcribed by ${parser.hostname}"><i class="material-icons">description</i></a>`;
+                    } break;
 
                     case "article": {
-                        source = '<a target="_blank" href="' + data.source + '">' + data.title + '</a>';
-                    }
-                        break
+                        source = `<a target="_blank" href="${data.source}">${data.title}</a>`;
+                    } break
 
                 }
 
@@ -143,79 +149,69 @@ search.on('render', function() {
         }
     }
 
+    updateVideoModals();
 });
 
-(function() {
-
-    document.addEventListener("click", function(event) {
-
-        if (!(event.target.tagName.toLowerCase() === 'a')) {
-            return;
-        }
-
-        var hash = event.target.hash;
-
-        if (hash.match('^#video-modal')) {
-
-            var parts = hash.split('{');
-
-            // get the video id
-            var videoID = parts[1].split('/')[3];
-
-            // only time stuff - thank you, youtube... ;)
-            var time = null;
-            if(parts.length > 2) {
-
-                time = parts[parts.length - 1];
-            }
-
-            var minutes = 0;
-            var seconds = 0;
-
-            // If we even have a valid timestamp
-            if(!(time === null)) {
-                var mIndex = time.indexOf('m');
-                var sIndex = time.indexOf('s');
-
-                // if we have a timestamp with minutes AND seconds
-                if(!(mIndex == -1) && !(sIndex == -1)) {
-
-                    minutes = parseInt(time.substr(0, mIndex));
-                    seconds = parseInt(time.substr(mIndex + 1, sIndex));
-
-                } else if(!(mIndex == -1)) {
-
-                    // only minutes given
-                    minutes = parseInt(time.substr(0, mIndex));
-
-                } else if(!(sIndex == -1)) {
-
-                    // only seconds given
-                    seconds = parseInt(time.substr(0, sIndex));
-
+function updateVideoModals()
+{
+    const elements = document.getElementsByClassName('video-modal-link');
+    for(let i = 0; i < elements.length; i++)
+    {
+        const element = elements[i];
+        element.addEventListener("click", function(event) {
+    
+            if (true || event.target.hash.match('^#video-modal')) {
+    
+                // get the video id
+                var videoID = event.target.getAttribute('data-source').split('/')[3]; 
+    
+                // only time stuff - thank you, youtube... ;)
+                var minutes = 0;
+                var seconds = 0;
+                if(event.target.hasAttribute('data-time')) {
+    
+                    const time = event.target.getAttribute('data-time');
+    
+                    var mIndex = time.indexOf('m');
+                    var sIndex = time.indexOf('s');
+    
+                    // if we have a timestamp with minutes AND seconds
+                    if(!(mIndex == -1) && !(sIndex == -1)) {
+                        minutes = parseInt(time.substr(0, mIndex));
+                        seconds = parseInt(time.substr(mIndex + 1, sIndex));
+                    } else if(!(mIndex == -1)) {
+                        // only minutes given
+                        minutes = parseInt(time.substr(0, mIndex));
+                    } else if(!(sIndex == -1)) {
+                        // only seconds given
+                        seconds = parseInt(time.substr(0, sIndex));
+                    }
                 }
+    
+                const offset = (minutes * 60) + seconds;
+    
+                // set stuff
+                const content = document.getElementById('video-modal-content');
+                const youtubeUrl = `https://www.youtube.com/embed/${videoID}?autoplay=1&amp;showinfo=0` + (offset === 0 ? '' : '&start=' + offset);
+                content.innerHTML = `<iframe id="video-modal-content" width="853" height="480" src="${youtubeUrl}"` +
+                    'frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+                const instance = M.Modal.getInstance(document.getElementById('video-modal'));
+                instance.open();
+    
             }
+    
+        });
 
-            var offset = (minutes * 60) + seconds;
+        
+    }
 
-            // set stuff
-            const content = document.getElementById('video-modal-content');
-            const youtubeUrl = 'https://www.youtube.com/embed/' + videoID + '?autoplay=1&amp;showinfo=0' + (offset === 0 ? '' : '&start=' + offset);
-            //content.setAttribute('src', );
-            content.innerHTML = '<iframe id="video-modal-content" width="853" height="480" src="' + youtubeUrl + '"\n' +
-                'frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
-            const instance = M.Modal.getInstance(document.getElementById('video-modal'));
-            instance.open();
+}
 
-        }
-
-    });
-
+(function() {
     document.getElementById('video-modal').addEventListener('click', function (event) {
         const element = document.getElementById('video-modal-content');
         element.innerHTML = '';
-    });
-
+    }); 
 })();
 
 search.start();

@@ -22,8 +22,12 @@ const search = instantsearch({
         router: instantsearch.routers.history({
             createURL({ qsModule, routeState, location }) {
                 const baseUrl = location.origin;
-                const question = encodeURIComponent(routeState.query);
-                return `${baseUrl}?question=${question}`;
+                if(routeState.hasOwnProperty('query'))
+                {
+                    const question = encodeURIComponent(routeState.query);
+                    return `${baseUrl}?question=${question}`;
+                }
+                return `${baseUrl}`;
             },
 
             parseURL({ qsModule, location }) {
@@ -51,9 +55,13 @@ search.addWidgets([
         showReset: false,
         showSubmit: false,
     }),
+    instantsearch.widgets.poweredBy({
+        container: '.powered-by-algolia',
+    }),
     instantsearch.widgets.hits({
         container: '#results',
         templates: {
+            list: 'test',
             item: function(data) {
                 var source = 'UNKOWN';
                 var transcript = '';

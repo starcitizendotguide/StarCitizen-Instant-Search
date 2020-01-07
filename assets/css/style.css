@@ -29,13 +29,22 @@ a:hover {
     background: none;
 }
 
-.modal-footer {
-    background: none !important;
+.modal-content {
+    position: relative;
+    padding-bottom: 56.25% !important;
+    padding-top: 30px !important; 
+    height: 0; 
+    overflow: hidden;
 }
-
-.modal-content iframe {
-    margin: 0 auto;
-    display: block;
+     
+.modal-content iframe,
+.modal-content object,
+.modal-content embed {
+position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 
 blockquote {

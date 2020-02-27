@@ -66,7 +66,7 @@ search.addWidgets([
         templates: {
             list: 'test',
             item: function(data) {
-                var source = 'UNKOWN';
+                var source = 'UNKNOWN';
                 var transcript = '';
 
                 switch(data.type) {
@@ -87,10 +87,10 @@ search.addWidgets([
                         transcript = `<a target="_blank" href="${data.transcript}" class="tooltipped right" data-tooltip="Transcribed by ${parser.hostname}"><i class="material-icons">description</i></a>`;
                     } break;
 
+                    case "spectrum":
                     case "article": {
                         source = `<a target="_blank" href="${data.source}">${data.title}</a>`;
-                    } break
-
+                    } break;
                 }
 
 

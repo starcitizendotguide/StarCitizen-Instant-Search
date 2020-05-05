@@ -139,16 +139,6 @@ search.on('render', function() {
         }
     }
 
-    //---
-    if(false) {
-        const element = document.getElementsByClassName('ais-Hits-list');
-        if(element.length === 1)
-        {
-            element[0].outerHTML = element[0].outerHTML.replace(/<ol/gm, '<ul')
-                .replace(/<\/ol>/gm, '</ul>');
-        }
-    }
-
     updateVideoModals();
 });
 
@@ -212,6 +202,11 @@ function updateVideoModals()
         const element = document.getElementById('video-modal-content');
         element.innerHTML = '';
     }); 
+
+    if(window.location.hostname === 'starfarer.space')
+    {
+        document.getElementById('moving-notice-block').remove();
+    }
 })();
 
 search.start();

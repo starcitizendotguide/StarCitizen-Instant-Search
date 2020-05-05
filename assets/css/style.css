@@ -129,5 +129,5 @@ blockquote {
 
 #results ol {
     list-style-type: none;
-    padding-left: none;
+    padding-left: 0px;
 }

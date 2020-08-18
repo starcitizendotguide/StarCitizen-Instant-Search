@@ -202,11 +202,6 @@ function updateVideoModals()
         const element = document.getElementById('video-modal-content');
         element.innerHTML = '';
     }); 
-
-    if(window.location.hostname === 'starfarer.space')
-    {
-        document.getElementById('moving-notice-block').remove();
-    }
 })();
 
 search.start();

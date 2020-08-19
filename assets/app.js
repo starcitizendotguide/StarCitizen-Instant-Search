@@ -18,7 +18,7 @@ const search = instantsearch({
     indexName: 'sc_questions',
     searchClient,
     routing: {
-        stateMapping: instantsearch.stateMappings.singleIndex('question_new_'),
+        stateMapping: instantsearch.stateMappings.singleIndex('sc_questions'),
         router: instantsearch.routers.history({
             createURL({ qsModule, routeState, location }) {
                 const baseUrl = location.origin;

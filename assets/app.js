@@ -15,7 +15,7 @@ const searchClient = algoliasearch(
 );
 
 const search = instantsearch({
-    indexName: 'question_new_',
+    indexName: 'sc_questions',
     searchClient,
     routing: {
         stateMapping: instantsearch.stateMappings.singleIndex('question_new_'),
@@ -93,6 +93,16 @@ search.addWidgets([
                     } break;
                 }
 
+                
+                /*var age_indicator = '<i class="fas fa-hourglass-end"></i> a';
+                if (data.published_at_timestamp < (Date.now()/1000 - 2 * 365 * 24 * 60 * 60)) 
+                {
+                    age_indicator = `<i class="material-icons icon-color-red">hourglass_disabled</i> c`;
+                } else if (data.published_at_timestamp < (Date.now()/1000 - 1.5 * 365 * 24 * 60 * 60)) 
+                {
+                    age_indicator = `<i class="material-icons icon-color-yellow">hourglass_full</i> b`;
+                }*/
+                 
 
                 return `
                 <div id="${data.objectID}">

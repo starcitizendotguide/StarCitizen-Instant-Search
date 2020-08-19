@@ -131,3 +131,15 @@ blockquote {
     list-style-type: none;
     padding-left: 0px;
 }
+
+.icon-color-red {
+    color: red;
+}
+
+.icon-color-yellow {
+    color: yellow;
+}
+
+.icon-color-green {
+    color: green;
+}
